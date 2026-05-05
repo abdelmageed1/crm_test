@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}القسم الثاني{% endblock %}
+
+{% block extra_css %}
+<style>
+    .action-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .action-card {
+        background: white;
+        border-radius: 20px;
+        padding: 3rem 2rem;
+        text-align: center;
+        border: 2px solid #e5e7eb;
+        box-shadow: 0 4px 24px rgba(79,110,247,0.08);
+        transition: all 0.3s;
+    }
+
+    .action-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 48px rgba(79,110,247,0.18);
+    }
+
+    .action-card.add { border-color: #4f6ef7; }
+    .action-card.view { border-color: #10b981; }
+
+    .action-icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        display: block;
+    }
+
+    .action-card h2 {
+        font-size: 1.5rem;
+        font-weight: 900;
+        margin-bottom: 0.75rem;
+        color: #1a1f36;
+    }
+
+    .action-card p {
+        color: #6b7280;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📊 القسم الثاني</h1>
+    <p>إدارة بيانات العملاء — إضافة وعرض البيانات</p>
+</div>
+
+<div class="action-grid">
+    <div class="action-card add">
+        <span class="action-icon">➕</span>
+        <h2>إضافة عميل جديد</h2>
+        <p>أدخل بيانات عميل جديد وقم بحفظها مباشرة في قاعدة البيانات</p>
+        <a href="{% url 'add_lead' %}" class="btn btn-primary">إضافة عميل</a>
+    </div>
+
+    <div class="action-card view">
+        <span class="action-icon">📋</span>
+        <h2>عرض كل البيانات</h2>
+        <p>استعرض جميع بيانات العملاء المحفوظة في قاعدة البيانات بشكل منظم</p>
+        <a href="{% url 'view_leads' %}" class="btn btn-success">عرض البيانات</a>
+    </div>
+</div>
+{% endblock %}

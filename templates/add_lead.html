@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% block title %}إضافة عميل جديد{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .form-group.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .form-group label {
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #374151;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 0.75rem 1rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        font-family: 'Cairo', sans-serif;
+        font-size: 0.95rem;
+        color: #1a1f36;
+        transition: all 0.2s;
+        background: #f9fafb;
+        width: 100%;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #4f6ef7;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(79,110,247,0.1);
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 2px solid #e5e7eb;
+    }
+
+    .btn-cancel {
+        background: #f3f4f6;
+        color: #374151;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        font-family: 'Cairo', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-cancel:hover { background: #e5e7eb; }
+
+    .errorlist {
+        color: #ef4444;
+        font-size: 0.8rem;
+        list-style: none;
+        margin-top: 0.25rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>➕ إضافة عميل جديد</h1>
+    <p>أدخل بيانات العميل وسيتم حفظها في قاعدة البيانات</p>
+</div>
+
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-grid">
+            <div class="form-group">
+                <label>{{ form.lead_owner.label }}</label>
+                {{ form.lead_owner }}
+                {{ form.lead_owner.errors }}
+            </div>
+            <div class="form-group">
+                <label>{{ form.phone_number.label }}</label>
+                {{ form.phone_number }}
+                {{ form.phone_number.errors }}
+            </div>
+            <div class="form-group">
+                <label>{{ form.client_code.label }}</label>
+                {{ form.client_code }}
+                {{ form.client_code.errors }}
+            </div>
+            <div class="form-group">
+                <label>{{ form.client_name.label }}</label>
+                {{ form.client_name }}
+                {{ form.client_name.errors }}
+            </div>
+            <div class="form-group">
+                <label>{{ form.project_name.label }}</label>
+                {{ form.project_name }}
+                {{ form.project_name.errors }}
+            </div>
+            <div class="form-group">
+                <label>{{ form.date.label }}</label>
+                {{ form.date }}
+                {{ form.date.errors }}
+            </div>
+            <div class="form-group">
+                <label>{{ form.status.label }}</label>
+                {{ form.status }}
+                {{ form.status.errors }}
+            </div>
+            <div class="form-group">
+                <label>{{ form.email_address.label }}</label>
+                {{ form.email_address }}
+                {{ form.email_address.errors }}
+            </div>
+            <div class="form-group">
+                <label>{{ form.type.label }}</label>
+                {{ form.type }}
+                {{ form.type.errors }}
+            </div>
+            <div class="form-group">
+                <label>{{ form.location.label }}</label>
+                {{ form.location }}
+                {{ form.location.errors }}
+            </div>
+            <div class="form-group full-width">
+                <label>{{ form.notes.label }}</label>
+                {{ form.notes }}
+                {{ form.notes.errors }}
+            </div>
+            <div class="form-group full-width">
+                <label>{{ form.manager_comments.label }}</label>
+                {{ form.manager_comments }}
+                {{ form.manager_comments.errors }}
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a href="{% url 'home' %}" class="btn-cancel">❌ إلغاء</a>
+            <button type="submit" class="btn btn-primary">💾 حفظ البيانات</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

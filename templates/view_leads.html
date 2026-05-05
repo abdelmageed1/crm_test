@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% block title %}عرض البيانات{% endblock %}
+
+{% block extra_css %}
+<style>
+    .table-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .table-title {
+        font-size: 1.3rem;
+        font-weight: 900;
+        color: #1a1f36;
+    }
+
+    .table-count {
+        background: #4f6ef7;
+        color: white;
+        padding: 0.35rem 0.85rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+
+    .search-bar {
+        width: 100%;
+        padding: 0.85rem 1.25rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        font-family: 'Cairo', sans-serif;
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+        transition: all 0.2s;
+    }
+
+    .search-bar:focus {
+        outline: none;
+        border-color: #4f6ef7;
+        box-shadow: 0 0 0 3px rgba(79,110,247,0.1);
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.88rem;
+    }
+
+    thead {
+        background: #1a1f36;
+        color: white;
+    }
+
+    thead th {
+        padding: 1rem 1.25rem;
+        text-align: right;
+        font-weight: 700;
+        white-space: nowrap;
+        font-size: 0.85rem;
+    }
+
+    tbody tr {
+        border-bottom: 1px solid #f3f4f6;
+        transition: background 0.15s;
+    }
+
+    tbody tr:hover { background: #f0f4ff; }
+
+    tbody td {
+        padding: 0.85rem 1.25rem;
+        color: #374151;
+        white-space: nowrap;
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .badge {
+        padding: 0.3rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+
+    .badge-interested { background: #ecfdf5; color: #065f46; }
+    .badge-scheduled { background: #eff6ff; color: #1e40af; }
+    .badge-default { background: #f3f4f6; color: #374151; }
+
+    .no-data {
+        text-align: center;
+        padding: 4rem;
+        color: #9ca3af;
+    }
+
+    .no-data span { font-size: 3rem; display: block; margin-bottom: 1rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📋 عرض البيانات</h1>
+    <p>جميع بيانات العملاء المحفوظة في قاعدة البيانات</p>
+</div>
+
+<div class="card">
+    <div class="table-header">
+        <div style="display:flex; align-items:center; gap:1rem;">
+            <span class="table-title">قائمة العملاء</span>
+            <span class="table-count">{{ leads|length }} عميل</span>
+        </div>
+        <a href="{% url 'add_lead' %}" class="btn btn-primary">➕ إضافة عميل</a>
+    </div>
+
+    <input type="text" class="search-bar" placeholder="🔍 ابحث باسم العميل أو المشروع..." id="searchInput">
+
+    {% if leads %}
+    <div class="table-wrapper">
+        <table id="leadsTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>المسؤول</th>
+                    <th>رقم الهاتف</th>
+                    <th>كود العميل</th>
+                    <th>اسم العميل</th>
+                    <th>المشروع</th>
+                    <th>التاريخ</th>
+                    <th>الحالة</th>
+                    <th>النوع</th>
+                    <th>الموقع</th>
+                    <th>الملاحظات</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lead in leads %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ lead.lead_owner|default:"-" }}</td>
+                    <td>{{ lead.phone_number|default:"-" }}</td>
+                    <td>{{ lead.client_code|default:"-" }}</td>
+                    <td><strong>{{ lead.client_name|default:"-" }}</strong></td>
+                    <td>{{ lead.project_name|default:"-" }}</td>
+                    <td>{{ lead.date|default:"-" }}</td>
+                    <td>
+                        {% if lead.status %}
+                            {% if 'Interested' in lead.status or 'interested' in lead.status %}
+                                <span class="badge badge-interested">{{ lead.status }}</span>
+                            {% elif 'Scheduled' in lead.status or 'scheduled' in lead.status %}
+                                <span class="badge badge-scheduled">{{ lead.status }}</span>
+                            {% else %}
+                                <span class="badge badge-default">{{ lead.status }}</span>
+                            {% endif %}
+                        {% else %}-{% endif %}
+                    </td>
+                    <td>{{ lead.type|default:"-" }}</td>
+                    <td>{{ lead.location|default:"-" }}</td>
+                    <td title="{{ lead.notes }}">{{ lead.notes|truncatechars:40|default:"-" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="no-data">
+        <span>📭</span>
+        <p>لا توجد بيانات حتى الآن</p>
+        <a href="{% url 'add_lead' %}" class="btn btn-primary" style="margin-top:1rem;">➕ إضافة أول عميل</a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+document.getElementById('searchInput').addEventListener('keyup', function() {
+    const filter = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#leadsTable tbody tr');
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(filter) ? '' : 'none';
+    });
+});
+</script>
+{% endblock %}

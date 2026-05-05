@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+
+{% block title %}الصفحة الرئيسية{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero {
+        background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+        border-radius: 20px;
+        padding: 4rem 3rem;
+        text-align: center;
+        color: white;
+        margin-bottom: 2.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: -80px; right: -80px;
+        width: 300px; height: 300px;
+        background: #4f6ef7;
+        border-radius: 50%;
+        opacity: 0.15;
+    }
+
+    .hero::after {
+        content: '';
+        position: absolute;
+        bottom: -60px; left: -60px;
+        width: 200px; height: 200px;
+        background: #f7c948;
+        border-radius: 50%;
+        opacity: 0.1;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+        font-weight: 900;
+        margin-bottom: 1rem;
+        position: relative;
+    }
+
+    .hero h1 span { color: #f7c948; }
+
+    .hero p {
+        font-size: 1.2rem;
+        color: rgba(255,255,255,0.7);
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .hero-btns {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        position: relative;
+    }
+
+    .sections-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .section-card {
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        text-align: center;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 24px rgba(79,110,247,0.08);
+        transition: all 0.3s;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
+    .section-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 36px rgba(79,110,247,0.18);
+        border-color: #4f6ef7;
+    }
+
+    .section-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    .section-card h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #1a1f36;
+        margin-bottom: 0.5rem;
+    }
+
+    .section-card p {
+        font-size: 0.85rem;
+        color: #6b7280;
+    }
+
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-align: center;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 24px rgba(79,110,247,0.08);
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: #4f6ef7;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: #6b7280;
+        margin-top: 0.25rem;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>نظام إدارة <span>العملاء</span></h1>
+    <p>منصة متكاملة لإدارة بيانات العملاء والمشاريع بكفاءة عالية</p>
+    <div class="hero-btns">
+        <a href="{% url 'add_lead' %}" class="btn btn-warning">➕ إضافة عميل جديد</a>
+        <a href="{% url 'view_leads' %}" class="btn btn-primary">📋 عرض كل البيانات</a>
+    </div>
+</div>
+
+<div class="sections-grid">
+    <a href="{% url 'section1' %}" class="section-card">
+        <span class="section-icon">📌</span>
+        <h3>القسم الأول</h3>
+        <p>إدارة البيانات الأساسية</p>
+    </a>
+    <a href="{% url 'section2' %}" class="section-card">
+        <span class="section-icon">📊</span>
+        <h3>القسم الثاني</h3>
+        <p>إدخال وعرض بيانات العملاء</p>
+    </a>
+    <a href="{% url 'section3' %}" class="section-card">
+        <span class="section-icon">📁</span>
+        <h3>القسم الثالث</h3>
+        <p>التقارير والإحصائيات</p>
+    </a>
+    <a href="{% url 'section4' %}" class="section-card">
+        <span class="section-icon">📋</span>
+        <h3>القسم الرابع</h3>
+        <p>إدارة المشاريع</p>
+    </a>
+    <a href="{% url 'section5' %}" class="section-card">
+        <span class="section-icon">📎</span>
+        <h3>القسم الخامس</h3>
+        <p>الإعدادات والتخصيص</p>
+    </a>
+</div>
+{% endblock %}
